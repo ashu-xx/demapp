@@ -27,7 +27,7 @@ public class DemappControllerTests {
     }
 
     @Test
-    void testEndpoint_fetch_submit() {
+    void testEndpoint_submit() {
         Obj obj = new Obj();
         obj.setIndex(10);
         obj.setData(Arrays.asList(1, 2, 3));
@@ -35,7 +35,7 @@ public class DemappControllerTests {
     }
 
     @Test
-    void testEndpoint_fetch_submit_twice() {
+    void testEndpoint_submit_twice() {
         Obj obj = new Obj();
         obj.setIndex(100);
         obj.setData(Arrays.asList(1, 2, 3));
@@ -44,12 +44,30 @@ public class DemappControllerTests {
     }
 
     @Test
-    void testEndpoint_fetch_submit_retrieve() {
+    void testEndpoint_submit_retrieve() {
         Obj obj = new Obj();
         obj.setIndex(1000);
         obj.setData(Arrays.asList(1, 2, 3));
         assertTrue(this.demappController.postDemappData(obj));
         assertEquals(obj.getData(), this.demappController.getDemappData(obj.getIndex()));
+    }
+
+    @Test
+    void testEndpoint_remove_nonExisting() {
+        assertEquals(Collections.emptyList(), this.demappController.removeDemappData(999));
+    }
+
+    @Test
+    void testEndpoint_submit_remove_retrieve() {
+        Obj obj = new Obj();
+        obj.setIndex(10000);
+        obj.setData(Arrays.asList(1, 2, 3));
+
+        assertTrue(this.demappController.postDemappData(obj));
+        assertEquals(obj.getData(), this.demappController.getDemappData(obj.getIndex()));
+
+        assertEquals(obj.getData(), this.demappController.removeDemappData(obj.getIndex()));
+        assertEquals(Collections.emptyList(), this.demappController.getDemappData(obj.getIndex()));
     }
 
 }

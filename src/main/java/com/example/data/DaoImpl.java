@@ -2,20 +2,19 @@ package com.example.data;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class DaoImpl implements Dao {
 
-    private Map<Integer, List<Integer>> store = new HashMap<>();
+    private final Map<Integer, List<Integer>> store = new HashMap<>();
 
+    @Override
     public List<Integer> retrieve(Integer key) {
         return this.store.getOrDefault(key, new ArrayList<Integer>());
     }
 
+    @Override
     public Boolean submit(Integer key, List<Integer> data) {
         if (this.store.containsKey(key)) {
             return false;
@@ -23,5 +22,14 @@ public class DaoImpl implements Dao {
             this.store.put(key, data);
             return true;
         }
+    }
+
+    @Override
+    public List<Integer> remove(Integer key) {
+        final List<Integer> data = this.store.remove(key);
+        if (data == null) {
+            return Collections.emptyList();
+        }
+        return data;
     }
 }

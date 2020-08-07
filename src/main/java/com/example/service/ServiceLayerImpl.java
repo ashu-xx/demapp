@@ -21,6 +21,12 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     @Override
     @TrackTime
+    public List<Integer> removeData(Integer index) {
+        return this.dao.remove(index);
+    }
+
+    @Override
+    @TrackTime
     public Boolean submitData(Integer index, List<Integer> data) {
         return this.dao.submit(index, data);
     }

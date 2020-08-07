@@ -8,5 +8,7 @@ public interface ServiceLayer {
 
     List<Integer> retrieveData(Integer index);
 
+    List<Integer> removeData(Integer index);
+
     Boolean submitData(Integer index, List<Integer> data);
 }

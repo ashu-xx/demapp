@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 @ExtendWith(MockitoExtension.class)
 public class DemappControllerMockitoTests {
@@ -35,7 +36,7 @@ public class DemappControllerMockitoTests {
     }
 
     @Test
-    void testEndpoint_fetch_submit() {
+    void testEndpoint_submit() {
         Obj obj = new Obj();
         obj.setIndex(10);
         obj.setData(Arrays.asList(1, 2, 3));
@@ -45,7 +46,7 @@ public class DemappControllerMockitoTests {
     }
 
     @Test
-    void testEndpoint_fetch_submit_twice() {
+    void testEndpoint_submit_twice() {
         Obj obj = new Obj();
         obj.setIndex(100);
         obj.setData(Arrays.asList(1, 2, 3));
@@ -56,17 +57,42 @@ public class DemappControllerMockitoTests {
     }
 
     @Test
-    void testEndpoint_fetch_submit_retrieve() {
+    void testEndpoint_submit_retrieve() {
         Obj obj = new Obj();
         obj.setIndex(1000);
         obj.setData(Arrays.asList(1, 2, 3));
 
         Mockito.when(this.serviceLayerMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
-
         assertTrue(this.demappController.postDemappData(obj));
 
         Mockito.when(this.serviceLayerMock.retrieveData(obj.getIndex())).thenReturn(obj.getData());
         assertEquals(obj.getData(), this.demappController.getDemappData(obj.getIndex()));
+    }
+
+    @Test
+    void testEndpoint_remove_nonExisting() {
+        Mockito.when(this.serviceLayerMock.removeData(anyInt())).thenReturn(Collections.emptyList());
+        assertEquals(Collections.emptyList(), this.demappController.removeDemappData(999));
+    }
+
+    @Test
+    void testEndpoint_submit_remove_retrieve() {
+        Obj obj = new Obj();
+        obj.setIndex(10000);
+        obj.setData(Arrays.asList(1, 2, 3));
+
+        Mockito.when(this.serviceLayerMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
+        assertTrue(this.demappController.postDemappData(obj));
+
+        Mockito.when(this.serviceLayerMock.retrieveData(obj.getIndex())).thenReturn(obj.getData());
+        assertEquals(obj.getData(), this.demappController.getDemappData(obj.getIndex()));
+
+        Mockito.when(this.serviceLayerMock.removeData(obj.getIndex())).thenReturn(obj.getData());
+        assertEquals(obj.getData(), this.demappController.removeDemappData(obj.getIndex()));
+
+
+        Mockito.when(this.serviceLayerMock.retrieveData(obj.getIndex())).thenReturn(Collections.emptyList());
+        assertEquals(Collections.emptyList(), this.demappController.getDemappData(obj.getIndex()));
     }
 
 }
