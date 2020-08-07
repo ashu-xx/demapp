@@ -4,10 +4,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface Dao {
 
-    List<Integer> retrieveData(Integer index);
+    public List<Integer> retrieve(Integer key);
 
-    Boolean submitData(Integer index, List<Integer> data);
+    public Boolean submit(Integer key, List<Integer> data);
 }

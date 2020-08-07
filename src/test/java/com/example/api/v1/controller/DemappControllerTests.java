@@ -1,26 +1,20 @@
-package com.example.business;
+package com.example.api.v1.controller;
 
-import com.example.data.Dao;
+import com.example.api.v1.common.Obj;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
-public class DemappControllerMockitoTests {
+@SpringBootTest
+public class DemappControllerTests {
 
-    @InjectMocks
+    @Autowired
     DemappController demappController;
-
-    @Mock
-    Dao daoMock;
 
     @Test
     void testEndpoint_test() {
@@ -29,8 +23,7 @@ public class DemappControllerMockitoTests {
 
     @Test
     void testEndpoint_fetch_nonExisting() {
-        Mockito.when(daoMock.retrieveData(1)).thenReturn(Arrays.asList());
-        assertEquals(Arrays.asList(), this.demappController.getDemappData(1));
+        assertEquals(Collections.emptyList(), this.demappController.getDemappData(1));
     }
 
     @Test
@@ -38,8 +31,6 @@ public class DemappControllerMockitoTests {
         Obj obj = new Obj();
         obj.setIndex(10);
         obj.setData(Arrays.asList(1, 2, 3));
-
-        Mockito.when(daoMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
         assertEquals(true, this.demappController.postDemappData(obj));
     }
 
@@ -48,11 +39,7 @@ public class DemappControllerMockitoTests {
         Obj obj = new Obj();
         obj.setIndex(100);
         obj.setData(Arrays.asList(1, 2, 3));
-
-        Mockito.when(daoMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
         assertTrue(this.demappController.postDemappData(obj));
-
-        Mockito.when(daoMock.submitData(obj.getIndex(), obj.getData())).thenReturn(false);
         assertFalse(this.demappController.postDemappData(obj));
     }
 
@@ -61,11 +48,7 @@ public class DemappControllerMockitoTests {
         Obj obj = new Obj();
         obj.setIndex(1000);
         obj.setData(Arrays.asList(1, 2, 3));
-
-        Mockito.when(daoMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
         assertTrue(this.demappController.postDemappData(obj));
-
-        Mockito.when(daoMock.retrieveData(obj.getIndex())).thenReturn(obj.getData());
         assertEquals(obj.getData(), this.demappController.getDemappData(obj.getIndex()));
     }
 

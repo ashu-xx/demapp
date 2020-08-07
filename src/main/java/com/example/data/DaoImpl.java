@@ -1,26 +1,27 @@
 package com.example.data;
 
-import com.example.aspect.TrackTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class DaoImpl implements Dao {
 
-    @Autowired
-    private DaoStorage storage;
+    private Map<Integer, List<Integer>> store = new HashMap<>();
 
-    @Override
-    @TrackTime
-    public List<Integer> retrieveData(Integer index) {
-        return this.storage.retrieve(index);
+    public List<Integer> retrieve(Integer key) {
+        return this.store.getOrDefault(key, new ArrayList<Integer>());
     }
 
-    @Override
-    @TrackTime
-    public Boolean submitData(Integer index, List<Integer> data) {
-        return this.storage.submit(index, data);
+    public Boolean submit(Integer key, List<Integer> data) {
+        if (this.store.containsKey(key)) {
+            return false;
+        } else {
+            this.store.put(key, data);
+            return true;
+        }
     }
 }

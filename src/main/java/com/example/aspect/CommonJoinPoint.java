@@ -6,7 +6,7 @@ public class CommonJoinPoint {
     @Pointcut("execution(* com.example.data.*.*(..))")
     public void dataLayerExecution(){}
 
-    @Pointcut("execution(* com.example.business.*.*(..))")
+    @Pointcut("execution(* com.example.service.*.*(..))")
     public void businessLayerExecution(){}
 
     @Pointcut("dataLayerExecution() && businessLayerExecution()")

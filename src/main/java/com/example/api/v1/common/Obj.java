@@ -1,4 +1,4 @@
-package com.example.business;
+package com.example.api.v1.common;
 
 import java.util.List;
 
