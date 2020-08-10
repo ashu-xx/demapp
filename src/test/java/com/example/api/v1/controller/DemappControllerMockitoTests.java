@@ -37,9 +37,7 @@ public class DemappControllerMockitoTests {
 
     @Test
     void testEndpoint_submit() {
-        Obj obj = new Obj();
-        obj.setIndex(10);
-        obj.setData(Arrays.asList(1, 2, 3));
+        Obj obj = new Obj(10, Arrays.asList(1, 2, 3));
 
         Mockito.when(this.serviceLayerMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
         assertEquals(true, this.demappController.postDemappData(obj));
@@ -47,9 +45,7 @@ public class DemappControllerMockitoTests {
 
     @Test
     void testEndpoint_submit_twice() {
-        Obj obj = new Obj();
-        obj.setIndex(100);
-        obj.setData(Arrays.asList(1, 2, 3));
+        Obj obj = new Obj(100, Arrays.asList(1, 2, 3));
 
         Mockito.when(this.serviceLayerMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true).thenReturn(false);
         assertTrue(this.demappController.postDemappData(obj));
@@ -58,9 +54,7 @@ public class DemappControllerMockitoTests {
 
     @Test
     void testEndpoint_submit_retrieve() {
-        Obj obj = new Obj();
-        obj.setIndex(1000);
-        obj.setData(Arrays.asList(1, 2, 3));
+        Obj obj = new Obj(1000, Arrays.asList(1, 2, 3));
 
         Mockito.when(this.serviceLayerMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
         assertTrue(this.demappController.postDemappData(obj));
@@ -77,9 +71,7 @@ public class DemappControllerMockitoTests {
 
     @Test
     void testEndpoint_submit_remove_retrieve() {
-        Obj obj = new Obj();
-        obj.setIndex(10000);
-        obj.setData(Arrays.asList(1, 2, 3));
+        Obj obj = new Obj(10000, Arrays.asList(1, 2, 3));
 
         Mockito.when(this.serviceLayerMock.submitData(obj.getIndex(), obj.getData())).thenReturn(true);
         assertTrue(this.demappController.postDemappData(obj));
