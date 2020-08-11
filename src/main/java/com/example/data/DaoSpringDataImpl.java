@@ -1,39 +1,40 @@
 package com.example.data;
 
+import com.example.data.springjpa.DaoEntity;
+import com.example.data.springjpa.DaoSpringDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
-//@Repository
-public class DaoJdbcImpl implements Dao {
+@Component
+public class DaoSpringDataImpl implements Dao {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    DaoSpringDataRepository repository;;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private boolean ifContains(Integer key) {
 
         logger.info(" ifContains {}", key);
-        Boolean exists = this.jdbcTemplate.queryForObject(
-                "SELECT EXISTS (SELECT key FROM db WHERE key = ? LIMIT 1)",
-                new Object[]{key},
-                Boolean.class);
-        return exists != null && exists;
+        return this.repository.exists(DaoEntity.getKeyMatcherExampleExact(key));
     }
 
     @Override
     public List<Integer> retrieve(Integer key) {
 
         logger.info(" retrieve {}", key);
-        return this.jdbcTemplate.queryForList(
-                "SELECT data FROM db WHERE key=?",
-                new Object[]{key},
-                Integer.class);
+        List<Integer> result = new ArrayList<>();
+
+        this.repository.findAll(DaoEntity.getKeyMatcherExampleExact(key))
+                .forEach(elem -> result.add(elem.getData()));
+
+        return result;
     }
 
     @Override
@@ -43,10 +44,7 @@ public class DaoJdbcImpl implements Dao {
         if (this.ifContains(key)) {
             return false;
         } else {
-            data.forEach(elem ->
-            this.jdbcTemplate.update(
-                    "INSERT INTO db (key,data) values (?, ?)",
-                    key, elem));
+            data.forEach(elem -> this.repository.save(new DaoEntity(key, elem)));
             return true;
         }
     }
@@ -57,9 +55,9 @@ public class DaoJdbcImpl implements Dao {
         logger.info(" remove {}", key);
         List<Integer> data = this.retrieve(key);
         if (!data.isEmpty()) {
-            this.jdbcTemplate.update(
-                    "DELETE FROM db WHERE key=?",
-                    key);
+            List<DaoEntity> daoList = new ArrayList<>(
+                    this.repository.findAll(DaoEntity.getKeyMatcherExampleExact(key)));
+            this.repository.deleteAll(daoList);
         }
         return data;
     }

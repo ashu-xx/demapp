@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
+
 	compileOnly 'org.projectlombok:lombok'
 	compile "org.aspectj:aspectjrt:1.+"
 	compile "org.springframework:spring-aop:4.+"
