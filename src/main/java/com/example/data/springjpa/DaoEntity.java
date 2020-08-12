@@ -10,7 +10,7 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 @Entity
 public class DaoEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Integer id;
 
     @Column

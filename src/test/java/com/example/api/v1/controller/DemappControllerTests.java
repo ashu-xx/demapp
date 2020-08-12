@@ -61,5 +61,4 @@ public class DemappControllerTests {
         assertEquals(obj.getData(), this.demappController.removeDemappData(obj.getIndex()));
         assertEquals(Collections.emptyList(), this.demappController.getDemappData(obj.getIndex()));
     }
-
 }
