@@ -5,7 +5,6 @@ import com.example.data.springjpa.DaoSpringDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.List;
 public class DaoSpringDataImpl implements Dao {
 
     @Autowired
-    DaoSpringDataRepository repository;;
+    DaoSpringDataRepository repository;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -40,11 +39,17 @@ public class DaoSpringDataImpl implements Dao {
     @Override
     public Boolean submit(Integer key, List<Integer> data) {
 
-        logger.info(" submit {}", key);
+        logger.info(" submit {}:{}", key, data);
         if (this.ifContains(key)) {
+            logger.info(" already exists {}", key);
             return false;
         } else {
-            data.forEach(elem -> this.repository.save(new DaoEntity(key, elem)));
+            logger.info(" does not exists {}", key);
+            //data.forEach(elem -> this.repository.save(new DaoEntity(key, elem)));
+            List<DaoEntity> daoEntityList = new ArrayList<>();
+            data.forEach(elem -> daoEntityList.add(new DaoEntity(key, elem)));
+
+            this.repository.saveAll(daoEntityList);
             return true;
         }
     }

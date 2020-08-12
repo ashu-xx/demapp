@@ -1,0 +1,4 @@
+INSERT INTO dao_entity (id,key,data) values(9991,1000,1000);
+INSERT INTO dao_entity (id,key,data) values(9992,1000,1001);
+INSERT INTO dao_entity (id,key,data) values(9993,2000,2000);
+INSERT INTO dao_entity (id,key,data) values(9994,2000,2001);

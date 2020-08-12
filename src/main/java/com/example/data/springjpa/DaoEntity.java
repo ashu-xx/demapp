@@ -3,21 +3,21 @@ package com.example.data.springjpa;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
 
 @Entity
 public class DaoEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column
     Integer key;
+
+    @Column
+    Integer data;
 
     @Override
     public String toString() {
@@ -27,9 +27,6 @@ public class DaoEntity {
                 ", data=" + data +
                 '}';
     }
-
-    @Column
-    Integer data;
 
     public Integer getId() {
         return id;
